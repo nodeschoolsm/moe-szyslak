@@ -71,4 +71,4 @@ client.on("message", function (message) {
   }
 });
 
-client.login("Nzc0MjkyMzk0MDY5NTkwMDM3.X6Vp_A.ui01MbnmrB_lgP5bBdzz1EUZ5sA");
+client.login("Token secreto");
