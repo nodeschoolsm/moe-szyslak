@@ -1,0 +1,72 @@
+{
+  "drinks": [
+    {
+      "drink": "cadejo",
+      "gif": "https://i.pinimg.com/originals/a6/62/97/a6629761fc7501ac1b0e6e3573266659.jpg"
+    },
+    {
+      "drink": "tea",
+      "gif": "https://i.gifer.com/8aYZ.gif"
+    },
+    {
+      "drink": "cafe",
+      "gif": "https://i.gifer.com/G2jU.gif"
+    },
+    {
+      "drink": "coca",
+      "gif": "https://i.gifer.com/D3mq.gif"
+    },
+    {
+      "drink": "icetea",
+      "gif": "https://i.gifer.com/AD5o.gif"
+    },
+    {
+      "drink": "corona",
+      "gif": "https://imagenes.20minutos.es/files/article_amp/uploads/2020/01/29/cerveza-corona.jpeg"
+    },
+    {
+      "drink": "corona",
+      "gif": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fsimple.wikipedia.org%2Fwiki%2FBudweiser_(Anheuser-Busch)&psig=AOvVaw1-ST68LSDjNYTuNt3GN0cr&ust=1608785574190000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKCT7ryn4-0CFQAAAAAdAAAAABAD"
+    },
+    {
+      "drink": "coca-cola",
+      "gif": "https://media1.tenor.com/images/6fb87401ce2d845a546c9be3adde4580/tenor.gif?itemid=10330724"
+    },
+    {
+      "drink": "budweiser",
+      "gif": "https://i.gifer.com/3Usy.gif"
+    },
+    {
+      "drink": "agua",
+      "gif": "https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__small/public/temas/agua.jpg"
+    },
+    {
+      "drink": "budweiser",
+      "gif": "https://i.gifer.com/3Usy.gif"
+    },
+    {
+      "drink": "waro",
+      "gif": "https://i.gifer.com/7CRm.gif"
+    },
+    {
+      "drink": "esencia-coronada",
+      "gif": "https://imageserve.babycenter.com/14/000/373/AuU8Y41i9Jvj7VqNbG1cI9j7Ffks5SZN_med.jpg"
+    },
+    {
+      "drink": "vodka",
+      "gif": "https://static.tildacdn.com/tild3766-3766-4935-a464-383134303333/original.jpeg"
+    },
+    {
+      "drink": "ron",
+      "gif": "https://media1.tenor.com/images/8dfe709e7989649f6383209c59be8b8d/tenor.gif?itemid=7397911"
+    },
+    {
+      "drink": "leche",
+      "gif": "https://1.bp.blogspot.com/-LboEPVTqECg/XxUUS32lGiI/AAAAAAAEFjk/s3RaBDOlM04ttdT4nxF2xl2ZpC64yte6QCLcBGAsYHQ/s640/FormalFabulousDeinonychus-size_restricted.gif"
+    },
+    {
+      "drink": "fosildrink",
+      "gif": "https://noticiaslogisticaytransporte.com/wp-content/uploads/2020/04/caida-del-precio-petroleo.jpg"
+    }
+  ]
+}

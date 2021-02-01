@@ -1,5 +1,17 @@
+//conection Discord
 const Discord = require("discord.js");
 const client = new Discord.Client();
+client.login("Nzc0MjkyMzk0MDY5NTkwMDM3.X6Vp_A.x41FYJUFppUohBJTo39HZPzVTFI");
+
+//conection dblow
+const low = require("lowdb");
+const FileSync = require("lowdb/adapters/FileSync");
+
+const adapter = new FileSync("db.json");
+const db = low(adapter);
+
+//formato del json
+db.defaults({ drinks: [] }).write();
 
 client.on("ready", () => {
   console.log("Estoy listo!");
@@ -7,68 +19,215 @@ client.on("ready", () => {
 
 // prefijo para que el bot sepa que le hablan
 const prefix = "!";
+var contador ;
+client.on("message", gotMessage);
 
-// comprueba si el contenido del mensaje que el bot está procesando comienza con el
-// prefijo que configuró y, si no lo hace, deja de procesarlo.
-client.on("message", function (message) {
-  if (message.author.bot) return;
-  if (!message.content.startsWith(prefix)) return;
+
+function gotMessage(message) {
+  if (message.author.bot) return; // comprueba si el contenido del mensaje que el bot está procesando comienza con el
+  if (!message.content.startsWith(prefix)) return; // prefijo que configuró y, si no lo hace, deja de procesarlo.
 
   const commandBody = message.content.slice(prefix.length); //quita el prefijo de la cadena
-    
   const args = commandBody.split(" "); //convierte la cadena en un array separado por comas
-  const contador = args.length;
-  let command;
-  var contado=0;
-  Bebidas=[]
-  //saber si el mensaje es para pedir o regalar una bebida
-  if (contador == 2) {
-    saberBeb=args[1]
-    command = args.shift().toLowerCase();;
-    message.channel.send(`${command}`);
+  contador = args.length;
 
-  } else if (contador == 3) {
-    saberBeb=args[1]
-    var recividor = args.pop();
+  
 
-    command = args.splice(2, 1); // borrará a la persona que an etiquetado;
-    var sabor = args[1]; //obtenemos el sabor de la bebida
-    command = args.shift().toLowerCase();;
-    var user = message.author; //obter el autor del mensaje
-    message.channel.send(`${command}`);
-  }else if(contador==4){
-    command = args[1];
-    message.channel.send(`${command}`);
-    message.channel.send(`entra aqui`);
+  //message.channel.send(`${contador}`);
+
+  let resut=valueMessage(args);
+
+  switch(resut){
+    case "add":
+     addDrinks(args);
+      message.channel.send(`bebida agregada con exito`);
+      
+      break;
+    case "edit":
+      modifyDrinks(args);
+      message.channel.send(`bebida modificada con exito`);
+      break;
+    case "delete":
+      deleteDrinks(args);
+      message.channel.send(`bebida eliminada con exito`);
+      break;
+    case "server":
+      //console.log("entre en el switch")
+
+      serveDrinks(args,message);
+      break;
+    case "view":
+      viewDrinks(message);
+      break;
+    case "help":
+      helpbot(message);
+
+
+      break;
+    default:
+
   }
+}
 
-  //comando para servir las bebidas
-  if (command === "drink,ping") {
-    const timeTaken = Date.now() - message.createdTimestamp;
-    message.reply(`Pong! This message had a latency of ${timeTaken}ms.`);
-  } else if (command === "drink") {
-    let idex=Bebidas.findIndex(art => art.nombre===sabor)
+//function to add drinks to json
+function addDrinks(args) {
+  let drink = args[2].toLowerCase();
+  let url = args[3];
+  db.get("drinks").push({ drink: drink, gif: url }).write();
+}
+
+//function to remove drinks
+function deleteDrinks(args) {
+
+   // Get your drink and gif
+   let gif = db
+   .get('drinks')
+   .find({ drink: args[2]})
+   .get('gif')
+   .value();
+
+ // Do something to your drink
+ console.log("gif que vamos a eliminar "+gif)
+  
+    db.get('drinks')
+      .remove({ drink: args[2], gif:gif})
+      .write();
+  
+}
+
+//function to modify drinks
+function modifyDrinks(args) {
+ 
+
+  // Update the user with the modified drink
+    db.get('drinks')
+    .find({ drink:args[2]})
+    .assign({ gif:args[3]})
+    .write();
+}
+
+//function to serve drinks
+function serveDrinks(args,message) {
+
+  let gif = db
+    .get('drinks')
+    .find({ drink: args[1]})
+    .get('gif')
+    .value();
+  console.log(`gif ${gif}`);
+  let drink = db
+    .get('drinks')
+    .find({ drink: args[1]})
+    .get('drink')
+    .value();
+  
+  //console.log(`drink ${drink}`);
+  var user = message.author;
+  var recividor=args[2];
+  
+
+  if(contador==3){
+    message.channel.send(`${recividor}, ${user} te a regalado una ${gif}`);
     
-    const gif = Bebidas.length;
-    if (contador == 2) {
+  }else if (contador ==2){
       message.reply(`aqui esta su bebida!`);
       message.channel.send(`${gif}`);
-    } else if (contador == 3) {
-      message.channel.send(
-        `Hey ${recividor}, ${user} te a regalado una ${sabor}`
-      );
-      message.channel.send(`${gif}`);
-    }
-  } else if (command === "add") {
-      
-      Bebidas.push({
-        nombre:args[2],
-        imagen:args[3]
-      });
-      message.channel.send(`bebida agregada ${Bebidas[contado].nombre}`);
-      contado++;
-      message.channel.send(`bebida agregada ${Bebidas.length}`);
   }
-});
+}
+//funtio to see list drinks 
+function viewDrinks(message){
+  drinksName=db.get('drinks')
+  .map('drink')
+  .value()
 
-client.login("Token secreto");
+  console.log(drinksName)
+
+  message.channel.send({
+    embed: {
+      color: 3447003,
+      title: "Drinks",
+      fields: [{ 
+        name:`${drinksName}`,
+        value:"gracias vuelva pronto",
+      }],
+    },
+  });
+
+
+}
+
+//funtion to help sintax bot
+function helpbot(message){
+  message.channel.send({embed: {
+    color: 3447003,
+    title: "comandos para moe-bot",
+    description: "lista y uso de comandos",
+    fields: [{ 
+        name: "ADD",
+        value: "!drink [ADD] [NOMBRE DE LA BEBIDA] [URL DE LA BEBIDA] ",
+      },
+      {
+        name: "EDIT",
+        value: "!drink [EDIT] [NOMBRE DE LA BEBIDA] [URL DE LA BEBIDA] ",
+      },
+      {
+        name: "DELETE",
+        value: "!drink [DELETE] [NOMBRE DE LA BEBIDA] ",
+      },
+      {
+        name: "SERVER",
+        value: "!drink [NOMBRE DE LA BEBIDA ] [USER DE LA PERSONA A LA QUE LE REGALO]",
+        value1: "!drink [NOMBRE DE LA BEBIDA QUE QUIERO]",
+      }, 
+      {
+        name: "HELP",
+        value: "!drink [HELP]",
+      },
+      , 
+      {
+        name: "VIEW",
+        value: "!drink [VIEW]",
+      },
+
+      
+    ],
+    
+  }
+  });
+}
+
+//comprobar cuerpo del mensaje
+
+function valueMessage(args){
+  let command ;
+  
+  // if the array has 4 values, it means that the command is to edit or add
+  console.log(contador);
+  if(contador==4){
+    console.log("entre en el if de 4")
+    command=args[1].toLowerCase();
+    console.log(command);
+  }else if(contador==3){
+    console.log("entre en el if de 3")
+    if(args[1]==="delete"){
+      command="delete";
+    }else{
+      command="server";
+    }
+    console.log(command);
+  }else if(contador==2){
+   // console.log("entre en el if de 2")
+   if(args[1]==="help"){
+    command="help";
+  }else if(args[1]==="view"){
+    command="view";
+  }else{
+    command="server";
+  }
+    
+    console.log(command);
+  }
+
+return command;
+
+}
