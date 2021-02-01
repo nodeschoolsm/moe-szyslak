@@ -3,7 +3,7 @@ require("dotenv").config();
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const { TOKEN } = process.env;
-console.log({TOKEN});
+
 if (!TOKEN) {
   return console.log("token no existe");
 }
